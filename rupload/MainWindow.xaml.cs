@@ -21,36 +21,6 @@ namespace rupload
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;
-        }
-
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            string[] args = Environment.GetCommandLineArgs();
-#if DEBUG
-            args = new string[2] {"", @"C:\Dropbox\Desktop\powershell.txt"};
-#endif
-            if (args.Length > 1)
-            {
-                string filename = args[1];
-
-                CloudStorageAccount account = CloudStorageAccount.Parse(System.Configuration.ConfigurationManager.AppSettings["StorageConnection"].ToString());
-                CloudBlobClient blobClient = account.CreateCloudBlobClient();
-
-                CloudBlobContainer container = blobClient.GetContainerReference("ruploads");
-                container.CreateIfNotExists();
-
-                BlobContainerPermissions containerPermissions = new BlobContainerPermissions();
-                containerPermissions.PublicAccess = BlobContainerPublicAccessType.Blob;
-                container.SetPermissions(containerPermissions);
-                
-                var blob = container.GetBlockBlobReference(System.IO.Path.GetFileName(filename));
-                blob.UploadFromFile(filename, System.IO.FileMode.Open);
-
-                Clipboard.SetText(blob.Uri.ToString());
-
-                Application.Current.Shutdown();
-            }
         }
     }
 }

@@ -99,6 +99,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\BlobService.cs" />
+    <Compile Include="Services\ClipboardService.cs" />
+    <Compile Include="Services\CommandLineArgsService.cs" />
+    <Compile Include="Services\IBlobService.cs" />
+    <Compile Include="Services\IClipboardService.cs" />
+    <Compile Include="Services\ICommandLineArgsService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
