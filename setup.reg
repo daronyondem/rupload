@@ -1,0 +1,6 @@
+Windows Registry Editor Version 5.00 
+
+[HKEY_CLASSES_ROOT\*\shell]
+[HKEY_CLASSES_ROOT\*\shell\Rupload]
+[HKEY_CLASSES_ROOT\*\shell\Rupload\command]
+@="C:\Dropbox\GitHub\rupload\rupload\bin\Debug\rupload.exe %1"
