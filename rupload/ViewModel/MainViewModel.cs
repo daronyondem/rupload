@@ -9,11 +9,13 @@ namespace rupload.ViewModel
         private IBlobService currentBlobService;
         private ICommandLineArgsService currentCommandLineArgsService;
         private IClipboardService currentClipboardService;
-        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService)
+        private IDeviceServices currentDeviceServices;
+        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices)
         {
             currentBlobService = blobService;
             currentCommandLineArgsService = commandLineArgsService;
             currentClipboardService = clipboardService;
+            currentDeviceServices = deviceServices;
         }
 
         private RelayCommand _uploadCommand;
@@ -28,6 +30,7 @@ namespace rupload.ViewModel
                     {
                         string blobUrl = await currentBlobService.UploadBlob("ruploads", currentCommandLineArgsService.GetFirstCommand());
                         currentClipboardService.SetClipboard(blobUrl);
+                        currentDeviceServices.ShutDownApp();
                     }));
             }
         }
