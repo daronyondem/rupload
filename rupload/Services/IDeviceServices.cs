@@ -1,5 +1,4 @@
-﻿using System;
-namespace rupload.Services
+﻿namespace rupload.Services
 {
     public interface IDeviceServices
     {
