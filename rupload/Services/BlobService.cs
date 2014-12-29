@@ -58,8 +58,12 @@ namespace rupload.Services
                 tcs.TrySetResult("");
             };
             transferUpload.UploadBlobAsync(blob, path);
-            
+                       
             await tcs.Task;
+
+            blob.Properties.ContentType = System.Web.MimeMapping.GetMimeMapping(System.IO.Path.GetFileName(path));
+            await blob.SetPropertiesAsync();
+
             return blob.Uri.ToString();
         }        
     }
