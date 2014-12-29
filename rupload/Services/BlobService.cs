@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using rupload.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,15 +38,32 @@ namespace rupload.Services
             return result;           
         }
 
-        public async Task<string> UploadBlob(string containerName, string path)
+        public async Task<string> UploadBlob(string containerName, string path, IProgress<BlobUploadProgressUpdate> progress)
         {
             CloudBlobContainer container = blobClient.GetContainerReference(containerName);
             await container.CreateIfNotExistsAsync();
 
             var blob = container.GetBlockBlobReference(System.IO.Path.GetFileName(path));
-            await blob.UploadFromFileAsync(path, System.IO.FileMode.Open);
+            
+            var tcs = new TaskCompletionSource<string>();
 
+            BlobTransfer transferUpload = new BlobTransfer();
+            transferUpload.TransferProgressChanged += (object sender, BlobTransfer.BlobTransferProgressChangedEventArgs e) =>
+            {
+                progress.Report(new BlobUploadProgressUpdate()
+                {
+                    Percentage=  e.ProgressPercentage, 
+                    Description = (e.Speed / 1024).ToString("N2") + "KB/s"
+            });
+            };
+            transferUpload.TransferCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) =>
+            {
+                tcs.TrySetResult("");
+            };
+            transferUpload.UploadBlobAsync(blob, path);
+            
+            await tcs.Task;
             return blob.Uri.ToString();
-        }
+        }        
     }
 }

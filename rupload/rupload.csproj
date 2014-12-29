@@ -99,7 +99,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\BlobTransfer.cs" />
     <Compile Include="Services\BlobService.cs" />
+    <Compile Include="Services\BlobUploadProgressUpdate.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\CommandLineArgsService.cs" />
     <Compile Include="Services\DeviceServices.cs" />

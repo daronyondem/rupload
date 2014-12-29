@@ -9,5 +9,10 @@
 			<Custom:EventToCommand Command="{Binding UploadCommand, Mode=OneWay}"/>
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
-	<Grid/>
+	<Grid>
+		<StackPanel>
+			<ProgressBar Height="10" VerticalAlignment="Top" Value="{Binding Progress}" Width="517"/>
+			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding UploadSpeed}" VerticalAlignment="Top"/>
+		</StackPanel>
+	</Grid>
 </Window>

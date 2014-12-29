@@ -12,8 +12,8 @@ namespace rupload.Services
         {
             string[] args = Environment.GetCommandLineArgs();
 #if DEBUG
-                        args = new string[2] {"", @"C:\Dropbox\Desktop\powershell.txt"};
-#endif            
+                        args = new string[2] {"", @"C:\Videos\test.mp4"};
+#endif
             string filename = "";
             if (args.Length > 1)
             {
