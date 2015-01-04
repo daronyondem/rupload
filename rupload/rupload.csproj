@@ -101,6 +101,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\BlobTransfer.cs" />
+    <Compile Include="Services\BlobServiceConfig.cs" />
+    <Compile Include="Services\IBlobServiceConfig.cs" />
+    <Compile Include="Services\IJsonConfigService.cs" />
+    <Compile Include="Services\JsonConfigService.cs" />
     <Compile Include="Services\BlobService.cs" />
     <Compile Include="Services\BlobUploadProgressUpdate.cs" />
     <Compile Include="Services\ClipboardService.cs" />
@@ -134,11 +138,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -147,10 +146,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

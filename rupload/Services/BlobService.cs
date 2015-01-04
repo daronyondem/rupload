@@ -9,10 +9,17 @@ namespace rupload.Services
     public class BlobService : IBlobService
     {
         CloudBlobClient blobClient;
+        IBlobServiceConfig blobServiceConfig;
 
-        public BlobService(string appSettingsKeyName = "StorageConnection")
+        public BlobService(IBlobServiceConfig blobServiceConfig, IJsonConfigService<IBlobServiceConfig> jsonConfigService)
         {
-            CloudStorageAccount account = CloudStorageAccount.Parse(System.Configuration.ConfigurationManager.AppSettings[appSettingsKeyName].ToString());
+            this.blobServiceConfig = jsonConfigService.GetSettings().Result;
+            if(this.blobServiceConfig == null)
+            {
+                this.blobServiceConfig = new BlobServiceConfig() { UseDevelopmentStorage = true };
+                jsonConfigService.SaveSetting(this.blobServiceConfig);
+            }
+            CloudStorageAccount account = CloudStorageAccount.Parse(this.blobServiceConfig.GetConnectionString());
             blobClient = account.CreateCloudBlobClient();
         }
 
