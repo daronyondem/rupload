@@ -101,8 +101,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\BlobTransfer.cs" />
+    <Compile Include="Helpers\IAsyncInitialization.cs" />
     <Compile Include="Services\Azure\BlobServiceConfig.cs" />
-    <Compile Include="Services\Azure\IBlobServiceConfig.cs" />
     <Compile Include="Services\IJsonConfigService.cs" />
     <Compile Include="Services\JsonConfigService.cs" />
     <Compile Include="Services\Azure\BlobService.cs" />

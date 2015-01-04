@@ -14,8 +14,8 @@ namespace rupload.ViewModel
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                SimpleIoc.Default.Register<IBlobServiceConfig, BlobServiceConfig>();
-                SimpleIoc.Default.Register<IJsonConfigService<IBlobServiceConfig>, JsonConfigService<IBlobServiceConfig>>();              
+                SimpleIoc.Default.Register<BlobServiceConfig, BlobServiceConfig>();
+                SimpleIoc.Default.Register<IJsonConfigService<BlobServiceConfig>, JsonConfigService<BlobServiceConfig>>();
                 SimpleIoc.Default.Register<IBlobService, BlobService>();
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
@@ -23,8 +23,8 @@ namespace rupload.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IBlobServiceConfig, BlobServiceConfig>();
-                SimpleIoc.Default.Register<IJsonConfigService<IBlobServiceConfig>, JsonConfigService<IBlobServiceConfig>>();
+                SimpleIoc.Default.Register<BlobServiceConfig, BlobServiceConfig>();
+                SimpleIoc.Default.Register<IJsonConfigService<BlobServiceConfig>, JsonConfigService<BlobServiceConfig>>();
                 SimpleIoc.Default.Register<IBlobService, BlobService>();
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();

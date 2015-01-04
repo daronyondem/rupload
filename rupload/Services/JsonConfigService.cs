@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using rupload.Services.Azure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,7 @@ namespace rupload.Services
 
         public async Task SaveSetting(T configObject)
         {
-            string outputJson = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(configObject));
+            string outputJson = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(configObject, Formatting.Indented));
             string configEnvironment = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string fileFullPath = configEnvironment + @"\" + configFileName;
             System.IO.StreamWriter sWriter = System.IO.File.CreateText(fileFullPath);
@@ -30,9 +31,10 @@ namespace rupload.Services
             if(System.IO.File.Exists(fileFullPath))
             {
                 using (var reader = File.OpenText(fileFullPath))
-                {
-                    var jsonContent = await reader.ReadToEndAsync();   
-                    retVal = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(jsonContent));   
+                {          
+                    var jsonContent = await reader.ReadToEndAsync();
+                    retVal = await Task.Factory.StartNew(() =>
+                       JsonConvert.DeserializeObject<T>(jsonContent));   
                 }                            
             }
             return retVal;

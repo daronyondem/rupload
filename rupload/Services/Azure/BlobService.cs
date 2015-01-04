@@ -10,22 +10,19 @@ namespace rupload.Services.Azure
     public class BlobService : IBlobService
     {
         CloudBlobClient blobClient;
-        IBlobServiceConfig blobServiceConfig;
+        BlobServiceConfig blobServiceConfig;
+        IJsonConfigService<BlobServiceConfig> jsonConfigService;
 
-        public BlobService(IBlobServiceConfig blobServiceConfig, IJsonConfigService<IBlobServiceConfig> jsonConfigService)
+        public BlobService(BlobServiceConfig blobServiceConfig, IJsonConfigService<BlobServiceConfig> jsonConfigService)
         {
-            this.blobServiceConfig = jsonConfigService.GetSettings().Result;
-            if(this.blobServiceConfig == null)
-            {
-                this.blobServiceConfig = new BlobServiceConfig() { UseDevelopmentStorage = true };
-                jsonConfigService.SaveSetting(this.blobServiceConfig);
-            }
-            CloudStorageAccount account = CloudStorageAccount.Parse(this.blobServiceConfig.GetConnectionString());
-            blobClient = account.CreateCloudBlobClient();
+            this.blobServiceConfig = blobServiceConfig;
+            this.jsonConfigService = jsonConfigService;
+            Initialization = InitializeAsync();
         }
 
         public async Task<bool> CreateContainer(string containerName)
         {
+            await Initialization;
             bool result = true;
             try
             {
@@ -45,6 +42,7 @@ namespace rupload.Services.Azure
 
         public async Task<string> UploadBlob(string containerName, string path, IProgress<UploadProgressUpdate> progress)
         {
+            await Initialization;
             CloudBlobContainer container = blobClient.GetContainerReference(containerName);
             await container.CreateIfNotExistsAsync();
 
@@ -73,6 +71,19 @@ namespace rupload.Services.Azure
             await blob.SetPropertiesAsync();
 
             return blob.Uri.ToString();
-        }        
+        }
+
+        public Task Initialization { get; private set; }
+        private async Task InitializeAsync()
+        {
+            this.blobServiceConfig = await jsonConfigService.GetSettings();
+            if (this.blobServiceConfig == null)
+            {
+                this.blobServiceConfig = new BlobServiceConfig() { UseDevelopmentStorage = true };
+                await jsonConfigService.SaveSetting(this.blobServiceConfig);
+            }
+            CloudStorageAccount account = CloudStorageAccount.Parse(this.blobServiceConfig.GetConnectionString());
+            blobClient = account.CreateCloudBlobClient();
+        }
     }
 }

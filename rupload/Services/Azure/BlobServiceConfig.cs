@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace rupload.Services.Azure
 {
-    public class BlobServiceConfig : IBlobServiceConfig
+    public class BlobServiceConfig 
     {
         const string developmentStorageConnectionString = "UseDevelopmentStorage=true;";
         public string AccountName { get; set; }
@@ -14,7 +14,7 @@ namespace rupload.Services.Azure
         public bool UseDevelopmentStorage { get; set; }
         public DefaultEndpointsProtocol EndpointsProtocol { get; set; }
 
-        public string GetConnectionString()
+        public virtual string GetConnectionString()
         {
             string conn = null;
             if(UseDevelopmentStorage)
@@ -27,6 +27,11 @@ namespace rupload.Services.Azure
                     this.EndpointsProtocol.ToString(), this.AccountName, this.AccountKey);
             }
             return conn;
+        }
+        public enum DefaultEndpointsProtocol
+        {
+            http,
+            https
         }
     }
 }
