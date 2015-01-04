@@ -1,0 +1,12 @@
+﻿using rupload.Services.Model;
+using System;
+using System.Threading.Tasks;
+
+namespace rupload.Services.Azure
+{
+    public interface IBlobService
+    {
+        Task<bool> CreateContainer(string containerName);
+        Task<string> UploadBlob(string containerName, string path, IProgress<UploadProgressUpdate> progress);
+    }
+}

@@ -1,6 +1,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using rupload.Services;
+using rupload.Services.Azure;
+using rupload.Services.Model;
 using System;
 
 namespace rupload.ViewModel
@@ -29,7 +31,7 @@ namespace rupload.ViewModel
                     ?? (_uploadCommand = new RelayCommand(
                     async () =>
                     {
-                        var progressIndicator = new Progress<BlobUploadProgressUpdate>((BlobUploadProgressUpdate progress) => 
+                        var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) => 
                         {
                             this.Progress = progress.Percentage;
                             this.UploadSpeed = progress.Description;

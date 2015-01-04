@@ -1,7 +1,7 @@
 ﻿
-namespace rupload.Services
+namespace rupload.Services.Model
 {
-    public class BlobUploadProgressUpdate
+    public class UploadProgressUpdate
     {
         public int Percentage { get; set; }
         public string Description { get; set; }

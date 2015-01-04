@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using rupload.Services;
+using rupload.Services.Azure;
 
 namespace rupload.ViewModel
 {

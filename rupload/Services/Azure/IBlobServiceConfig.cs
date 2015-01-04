@@ -1,5 +1,5 @@
 ﻿using System;
-namespace rupload.Services
+namespace rupload.Services.Azure
 {
     public interface IBlobServiceConfig
     {

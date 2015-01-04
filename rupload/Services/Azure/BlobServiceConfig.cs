@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace rupload.Services
+namespace rupload.Services.Azure
 {
-    public class BlobServiceConfig : rupload.Services.IBlobServiceConfig
+    public class BlobServiceConfig : IBlobServiceConfig
     {
         const string developmentStorageConnectionString = "UseDevelopmentStorage=true;";
         public string AccountName { get; set; }

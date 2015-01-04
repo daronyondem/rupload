@@ -1,10 +1,11 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using rupload.Helpers;
+using rupload.Services.Model;
 using System;
 using System.Threading.Tasks;
 
-namespace rupload.Services
+namespace rupload.Services.Azure
 {
     public class BlobService : IBlobService
     {
@@ -42,7 +43,7 @@ namespace rupload.Services
             return result;           
         }
 
-        public async Task<string> UploadBlob(string containerName, string path, IProgress<BlobUploadProgressUpdate> progress)
+        public async Task<string> UploadBlob(string containerName, string path, IProgress<UploadProgressUpdate> progress)
         {
             CloudBlobContainer container = blobClient.GetContainerReference(containerName);
             await container.CreateIfNotExistsAsync();
@@ -54,7 +55,7 @@ namespace rupload.Services
             BlobTransfer transferUpload = new BlobTransfer();
             transferUpload.TransferProgressChanged += (object sender, BlobTransfer.BlobTransferProgressChangedEventArgs e) =>
             {
-                progress.Report(new BlobUploadProgressUpdate()
+                progress.Report(new UploadProgressUpdate()
                 {
                     Percentage=  e.ProgressPercentage, 
                     Description = (e.Speed / 1024).ToString("N2") + "KB/s"
