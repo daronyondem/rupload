@@ -9,5 +9,6 @@ namespace rupload.Services.Azure
     {
         Task<bool> CreateContainer(string containerName);
         Task<string> UploadBlob(string containerName, string path, IProgress<UploadProgressUpdate> progress);
+        Task<string> PreBuildUrl(string containerName, string path);
     }
 }

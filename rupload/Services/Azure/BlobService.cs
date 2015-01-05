@@ -40,6 +40,13 @@ namespace rupload.Services.Azure
             return result;           
         }
 
+        public async Task<string> PreBuildUrl(string containerName, string path)
+        {
+            await Initialization;
+            string retVal = this.blobClient.BaseUri + containerName + "/" + System.IO.Path.GetFileName(path);
+            return retVal;
+        }
+
         public async Task<string> UploadBlob(string containerName, string path, IProgress<UploadProgressUpdate> progress)
         {
             await Initialization;

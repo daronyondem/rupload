@@ -9,6 +9,8 @@ namespace rupload.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        const string containerName = "ruploads";
+
         private IBlobService currentBlobService;
         private ICommandLineArgsService currentCommandLineArgsService;
         private IClipboardService currentClipboardService;
@@ -31,12 +33,15 @@ namespace rupload.ViewModel
                     ?? (_uploadCommand = new RelayCommand(
                     async () =>
                     {
+                        string filePath = currentCommandLineArgsService.GetFirstCommand();
+                        string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
+                        currentClipboardService.SetClipboard(blobUrl);
                         var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) => 
                         {
                             this.Progress = progress.Percentage;
                             this.UploadSpeed = progress.Description;
                         });
-                        string blobUrl = await currentBlobService.UploadBlob("ruploads", currentCommandLineArgsService.GetFirstCommand(), progressIndicator);
+                        blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
                         currentClipboardService.SetClipboard(blobUrl);
                         currentDeviceServices.ShutDownApp();
                     }));
