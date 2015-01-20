@@ -5,7 +5,7 @@ namespace rupload.Services
     {
         public void SetClipboard(string text)
         {
-            System.Windows.Clipboard.SetText(text);
+            System.Windows.Clipboard.SetDataObject(text);
         }
     }
 }
