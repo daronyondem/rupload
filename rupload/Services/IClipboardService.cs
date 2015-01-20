@@ -2,6 +2,6 @@
 {
     public interface IClipboardService
     {
-        void SetClipboard(string text);
+        void SetUriToClipboard(string text);
     }
 }

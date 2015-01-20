@@ -3,9 +3,10 @@ namespace rupload.Services
 {
     public class ClipboardService : rupload.Services.IClipboardService
     {
-        public void SetClipboard(string text)
+        public void SetUriToClipboard(string Uri)
         {
-            System.Windows.Clipboard.SetDataObject(text);
+            Uri = System.Web.HttpUtility.UrlPathEncode(Uri);
+            System.Windows.Clipboard.SetDataObject(Uri);
         }
     }
 }

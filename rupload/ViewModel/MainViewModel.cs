@@ -35,14 +35,14 @@ namespace rupload.ViewModel
                     {
                         string filePath = currentCommandLineArgsService.GetFirstCommand();
                         string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
-                        currentClipboardService.SetClipboard(blobUrl);
+                        currentClipboardService.SetUriToClipboard(blobUrl);
                         var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) => 
                         {
                             this.Progress = progress.Percentage;
                             this.UploadSpeed = progress.Description;
                         });
                         blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
-                        currentClipboardService.SetClipboard(blobUrl);
+                        currentClipboardService.SetUriToClipboard(blobUrl);
                         currentDeviceServices.ShutDownApp();
                     }));
             }
