@@ -11,10 +11,11 @@ namespace rupload.ViewModel
     {
         const string containerName = "ruploads";
 
-        private IBlobService currentBlobService;
-        private ICommandLineArgsService currentCommandLineArgsService;
-        private IClipboardService currentClipboardService;
-        private IDeviceServices currentDeviceServices;
+        IBlobService currentBlobService;
+        ICommandLineArgsService currentCommandLineArgsService;
+        IClipboardService currentClipboardService;
+        IDeviceServices currentDeviceServices;
+
         public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices)
         {
             currentBlobService = blobService;
@@ -23,71 +24,49 @@ namespace rupload.ViewModel
             currentDeviceServices = deviceServices;
         }
 
-        private RelayCommand _uploadCommand;
-
-        public RelayCommand UploadCommand
+        RelayCommand _UploadCommand;
+        public RelayCommand UploadCommand => _UploadCommand ?? (_UploadCommand = new RelayCommand(async () =>
         {
-            get
+            string filePath = currentCommandLineArgsService.GetFirstCommand();
+            string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
+            currentClipboardService.SetUriToClipboard(blobUrl);
+            var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
             {
-                return _uploadCommand
-                    ?? (_uploadCommand = new RelayCommand(
-                    async () =>
-                    {
-                        string filePath = currentCommandLineArgsService.GetFirstCommand();
-                        string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
-                        currentClipboardService.SetUriToClipboard(blobUrl);
-                        var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) => 
-                        {
-                            this.Progress = progress.Percentage;
-                            this.UploadSpeed = progress.Description;
-                        });
-                        blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
-                        currentClipboardService.SetUriToClipboard(blobUrl);
-                        currentDeviceServices.ShutDownApp();
-                    }));
-            }
-        }
+                Progress = progress.Percentage;
+                UploadSpeed = progress.Description;
+            });
+            blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
+            currentClipboardService.SetUriToClipboard(blobUrl);
+            currentDeviceServices.ShutDownApp();
+        }));
 
         public const string ProgressPropertyName = "Progress";
-
-        private double _progress = 0;
+        double _Progress = default(double);
         public double Progress
         {
             get
             {
-                return _progress;
+                return _Progress;
             }
-
             set
             {
-                if (_progress == value)
-                {
-                    return;
-                }
-
-                _progress = value;
+                if (_Progress == value) return;
+                _Progress = value;
                 RaisePropertyChanged(ProgressPropertyName);
             }
         }
 
         public const string UploadSpeedPropertyName = "UploadSpeed";
-
-        private string _UploadSpeed = "";
-
+        string _UploadSpeed = string.Empty;
         public string UploadSpeed
         {
             get
             {
                 return _UploadSpeed;
             }
-
             set
             {
-                if (_UploadSpeed == value)
-                {
-                    return;
-                }
-
+                if (_UploadSpeed == value) return;
                 _UploadSpeed = value;
                 RaisePropertyChanged(UploadSpeedPropertyName);
             }

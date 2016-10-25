@@ -1,18 +1,32 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Custom="http://www.galasoft.ch/mvvmlight" x:Class="rupload.MainWindow"
-        Title="Rupload" Height="350" Width="525" WindowStyle="ToolWindow"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
-	<i:Interaction.Triggers>
-		<i:EventTrigger>
-			<Custom:EventToCommand Command="{Binding UploadCommand, Mode=OneWay}"/>
-		</i:EventTrigger>
-	</i:Interaction.Triggers>
-	<Grid>
-		<StackPanel>
-			<ProgressBar Height="10" VerticalAlignment="Top" Value="{Binding Progress}" Width="517"/>
-			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding UploadSpeed}" VerticalAlignment="Top"/>
-		</StackPanel>
-	</Grid>
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:Custom="http://www.galasoft.ch/mvvmlight"
+    x:Class="rupload.MainWindow"
+    Title="Rupload"
+    Height="350"
+    Width="525"
+    WindowStyle="ToolWindow"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <Custom:EventToCommand
+                Command="{Binding UploadCommand, Mode=OneWay}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <StackPanel>
+            <ProgressBar
+                Height="10"
+                VerticalAlignment="Top"
+                Value="{Binding Progress}"
+                Width="517" />
+            <TextBlock
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap"
+                Text="{Binding UploadSpeed}"
+                VerticalAlignment="Top" />
+        </StackPanel>
+    </Grid>
 </Window>
