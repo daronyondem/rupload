@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace rupload
 {
@@ -7,5 +8,10 @@ namespace rupload
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            ViewModel.ViewModelLocator.Cleanup();
+        }
     }
 }

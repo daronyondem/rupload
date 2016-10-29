@@ -41,10 +41,16 @@ namespace rupload.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
-        
+
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            // Clear the ViewModels
+            SimpleIoc.Default.Unregister<BlobServiceConfig>();
+            SimpleIoc.Default.Unregister<IJsonConfigService<BlobServiceConfig>>();
+            SimpleIoc.Default.Unregister<IBlobService>();
+            SimpleIoc.Default.Unregister<ICommandLineArgsService>();
+            SimpleIoc.Default.Unregister<IClipboardService>();
+            SimpleIoc.Default.Unregister<IDeviceServices>();
         }
     }
 }
