@@ -40,7 +40,6 @@ namespace rupload.ViewModel
             currentDeviceServices.ShutDownApp();
         }));
 
-        public const string ProgressPropertyName = "Progress";
         double _Progress = default(double);
         public double Progress
         {
@@ -52,11 +51,10 @@ namespace rupload.ViewModel
             {
                 if (_Progress == value) return;
                 _Progress = value;
-                RaisePropertyChanged(ProgressPropertyName);
+                RaisePropertyChanged(nameof(Progress));
             }
         }
 
-        public const string UploadSpeedPropertyName = "UploadSpeed";
         string _UploadSpeed = string.Empty;
         public string UploadSpeed
         {
@@ -68,7 +66,7 @@ namespace rupload.ViewModel
             {
                 if (_UploadSpeed == value) return;
                 _UploadSpeed = value;
-                RaisePropertyChanged(UploadSpeedPropertyName);
+                RaisePropertyChanged(nameof(UploadSpeed));
             }
         }
     }

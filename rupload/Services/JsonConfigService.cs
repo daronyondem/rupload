@@ -18,7 +18,7 @@ namespace rupload.Services
             string outputJson = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(configObject, Formatting.Indented));
             string configEnvironment = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string fileFullPath = configEnvironment + @"\" + configFileName;
-            System.IO.StreamWriter sWriter = System.IO.File.CreateText(fileFullPath);
+            StreamWriter sWriter = File.CreateText(fileFullPath);
             await sWriter.WriteLineAsync(outputJson);
             await sWriter.FlushAsync();
             sWriter.Close();
@@ -26,16 +26,15 @@ namespace rupload.Services
         public async Task<T> GetSettings()
         {
             T retVal = default(T);
-            string configEnvironment = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); 
+            string configEnvironment = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string fileFullPath = configEnvironment + @"\" + configFileName;
-            if(System.IO.File.Exists(fileFullPath))
+            if (File.Exists(fileFullPath))
             {
                 using (var reader = File.OpenText(fileFullPath))
-                {          
+                {
                     var jsonContent = await reader.ReadToEndAsync();
-                    retVal = await Task.Factory.StartNew(() =>
-                       JsonConvert.DeserializeObject<T>(jsonContent));   
-                }                            
+                    retVal = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(jsonContent));
+                }
             }
             return retVal;
         }
