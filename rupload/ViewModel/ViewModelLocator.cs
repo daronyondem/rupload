@@ -45,6 +45,7 @@ namespace rupload.ViewModel
         public static void Cleanup()
         {
             // Clear the ViewModels
+            SimpleIoc.Default.Unregister<MainViewModel>();
             SimpleIoc.Default.Unregister<BlobServiceConfig>();
             SimpleIoc.Default.Unregister<IJsonConfigService<BlobServiceConfig>>();
             SimpleIoc.Default.Unregister<IBlobService>();
