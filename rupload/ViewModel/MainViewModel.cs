@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using rupload.Helpers;
 using rupload.Services;
 using rupload.Services.Azure;
 using rupload.Services.Model;
@@ -29,14 +30,21 @@ namespace rupload.ViewModel
         {
             string filePath = currentCommandLineArgsService.GetFirstCommand();
             string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
-            currentClipboardService.SetUriToClipboard(blobUrl);
             var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
             {
                 Progress = progress.Percentage;
                 UploadSpeed = progress.Description;
             });
             blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
-            currentClipboardService.SetUriToClipboard(blobUrl);
+            try
+            {
+                string shortUrl = (await Request.ShortenUrl<UrlShorten>(new UrlShortenRequest() { url = blobUrl })).slug;
+                currentClipboardService.SetUriToClipboard(shortUrl);
+            }
+            catch (Exception)
+            {
+                currentClipboardService.SetUriToClipboard(blobUrl);
+            }
             currentDeviceServices.ShutDownApp();
         }));
 
