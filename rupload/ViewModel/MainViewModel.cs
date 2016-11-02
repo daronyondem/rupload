@@ -30,12 +30,7 @@ namespace rupload.ViewModel
         {
             string filePath = currentCommandLineArgsService.GetFirstCommand();
             string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
-            var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
-            {
-                Progress = progress.Percentage;
-                UploadSpeed = progress.Description;
-            });
-            blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
+            currentClipboardService.SetUriToClipboard(blobUrl);
             try
             {
                 string shortUrl = (await Request.ShortenUrlWithOuoPress(new OuoPressRequest() { url = blobUrl })).slug;
@@ -43,8 +38,13 @@ namespace rupload.ViewModel
             }
             catch (Exception)
             {
-                currentClipboardService.SetUriToClipboard(blobUrl);
             }
+            var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
+            {
+                Progress = progress.Percentage;
+                UploadSpeed = progress.Description;
+            });
+            blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
             currentDeviceServices.ShutDownApp();
         }));
 
