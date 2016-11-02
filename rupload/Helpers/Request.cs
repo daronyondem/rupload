@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using rupload.Services.Model;
 
 namespace rupload.Helpers
 {
@@ -18,7 +19,7 @@ namespace rupload.Helpers
             }
         }
 
-        public static async Task<T> ShortenUrl<T>(object bodyObject)
+        public static async Task<OuoPressRoot> ShortenUrlWithOuoPress(OuoPressRequest bodyObject)
         {
             App.httpClient.Timeout = TimeSpan.FromMinutes(5);
             App.httpClient.BaseAddress = new Uri("http://ouo.press");
@@ -28,7 +29,7 @@ namespace rupload.Helpers
                 using (HttpResponseMessage response = await App.httpClient.SendAsync(request))
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseString);
+                    return JsonConvert.DeserializeObject<OuoPressRoot>(responseString);
                 }
             }
         }
