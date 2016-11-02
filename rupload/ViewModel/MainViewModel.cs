@@ -38,7 +38,7 @@ namespace rupload.ViewModel
             blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
             try
             {
-                string shortUrl = (await Request.ShortenUrl<UrlShorten>(new UrlShortenRequest() { url = blobUrl })).slug;
+                string shortUrl = (await Request.ShortenUrlWithOuoPress(new OuoPressRequest() { url = blobUrl })).slug;
                 currentClipboardService.SetUriToClipboard(shortUrl);
             }
             catch (Exception)
