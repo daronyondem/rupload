@@ -2,7 +2,7 @@
 namespace rupload.Services.Model
 {
     // Whole URL shorten mechanism works only with http://ouo.press/
-    public class UrlShorten
+    public class OuoPressRoot
     {
         public bool error { get; set; }
 
@@ -20,7 +20,7 @@ namespace rupload.Services.Model
         }
     }
 
-    public class UrlShortenRequest
+    public class OuoPressRequest
     {
         public string _token { get; set; } = "Vx4NPAjwR6eK3qmTZ2YSWohfda0ThZ2STNLcPf7C"; // default token may be deprecated in the future
         public string url { get; set; }
