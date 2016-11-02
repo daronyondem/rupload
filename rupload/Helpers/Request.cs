@@ -10,31 +10,25 @@ namespace rupload.Helpers
     {
         public static async Task<T> PostAsync<T>(string url, string serializedBody)
         {
-            using (HttpClient httpClient = new HttpClient())
+            App.httpClient.Timeout = TimeSpan.FromMinutes(5);
+            using (HttpResponseMessage response = await App.httpClient.PostAsync(url, new StringContent(serializedBody)))
             {
-                httpClient.Timeout = TimeSpan.FromMinutes(5);
-                using (HttpResponseMessage response = await httpClient.PostAsync(url, new StringContent(serializedBody)))
-                {
-                    string responseString = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseString);
-                }
+                string responseString = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(responseString);
             }
         }
 
         public static async Task<T> ShortenUrl<T>(object bodyObject)
         {
-            using (HttpClient httpClient = new HttpClient())
+            App.httpClient.Timeout = TimeSpan.FromMinutes(5);
+            App.httpClient.BaseAddress = new Uri("http://ouo.press");
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/shorten"))
             {
-                httpClient.Timeout = TimeSpan.FromMinutes(5);
-                httpClient.BaseAddress = new Uri("http://ouo.press");
-                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/shorten"))
+                request.Content = new FormUrlEncodedContent(ObjectToKeyValuePair(bodyObject));
+                using (HttpResponseMessage response = await App.httpClient.SendAsync(request))
                 {
-                    request.Content = new FormUrlEncodedContent(ObjectToKeyValuePair(bodyObject));
-                    using (HttpResponseMessage response = await httpClient.SendAsync(request))
-                    {
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<T>(responseString);
-                    }
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(responseString);
                 }
             }
         }
