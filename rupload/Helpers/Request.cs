@@ -19,6 +19,7 @@ namespace rupload.Helpers
             }
         }
 
+        //TODO: convert to generic FormUrlEncoded request
         public static async Task<OuoPressRoot> ShortenUrlWithOuoPress(OuoPressRequest bodyObject)
         {
             App.httpClient.Timeout = TimeSpan.FromMinutes(5);
