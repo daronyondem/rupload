@@ -8,9 +8,14 @@ namespace rupload.Services
         {
             string[] args = Environment.GetCommandLineArgs();
 #if DEBUG
-            args = new string[2] { "", @"C:\Videos\test.mp4" };
+            args = new string[2] { "", @"C:\Users\Garen\Desktop\1.jpg" };
 #endif
-            return (args.Length > 1) ? args[1] : string.Empty;
+            var filename = string.Empty;
+            if (args.Length > 1)
+            {
+                filename = args[1];
+            }
+            return filename;
         }
     }
 }
