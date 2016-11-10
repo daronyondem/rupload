@@ -56,7 +56,7 @@ namespace rupload.ViewModel
             SimpleIoc.Default.Unregister<ICommandLineArgsService>();
             SimpleIoc.Default.Unregister<IClipboardService>();
             SimpleIoc.Default.Unregister<IDeviceServices>();
-            SimpleIoc.Default.Register<INotificationService>();
+            SimpleIoc.Default.Unregister<INotificationService>();
             SimpleIoc.Default.Unregister<IUrlShortenService>();
         }
     }
