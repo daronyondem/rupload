@@ -19,14 +19,16 @@ namespace rupload.ViewModel
         IClipboardService currentClipboardService;
         IDeviceServices currentDeviceServices;
         INotificationService currentNotificationService;
+        IUrlShortenService currentUrlShortenService;
 
-        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices, INotificationService notificationService)
+        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices, INotificationService notificationService, IUrlShortenService urlShortenService)
         {
             currentBlobService = blobService;
             currentCommandLineArgsService = commandLineArgsService;
             currentClipboardService = clipboardService;
             currentDeviceServices = deviceServices;
             currentNotificationService = notificationService;
+            currentUrlShortenService = urlShortenService;
         }
 
         RelayCommand _UploadCommand;
@@ -35,7 +37,8 @@ namespace rupload.ViewModel
             string filePath = currentCommandLineArgsService.GetFirstCommand();
             string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
             currentClipboardService.SetUriToClipboard(blobUrl);
-            blobUrl = await TryShortenUrlWithOuoPress(blobUrl);
+            blobUrl = await currentUrlShortenService.TryOuoPress(blobUrl);
+            currentClipboardService.SetUriToClipboard(blobUrl);
             var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
             {
                 Progress = progress.Percentage;
@@ -50,20 +53,6 @@ namespace rupload.ViewModel
         void ProgressIndicator_ProgressChanged(object sender, UploadProgressUpdate e)
         {
             App.trayIcon.ToolTipText = e.Percentage.ToString();
-        }
-
-        async Task<string> TryShortenUrlWithOuoPress(string blobUrl)
-        {
-            try
-            {
-                string shortUrl = (await Request.ShortenUrlWithOuoPress(new OuoPressRequest() { url = blobUrl })).slug;
-                currentClipboardService.SetUriToClipboard(shortUrl);
-                return shortUrl;
-            }
-            catch (Exception)
-            {
-                return blobUrl;
-            }
         }
 
         double _Progress = default(double);

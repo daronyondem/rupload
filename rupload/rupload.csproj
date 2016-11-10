@@ -159,6 +159,7 @@
     <Compile Include="Services\Azure\BlobServiceConfig.cs" />
     <Compile Include="Services\IJsonConfigService.cs" />
     <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="Services\IUrlShortenService.cs" />
     <Compile Include="Services\JsonConfigService.cs" />
     <Compile Include="Services\Azure\BlobService.cs" />
     <Compile Include="Model\UploadProgressUpdate.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Services\ICommandLineArgsService.cs" />
     <Compile Include="Services\IDeviceServices.cs" />
     <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\UrlShortenService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
