@@ -20,6 +20,7 @@ namespace rupload.ViewModel
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
                 SimpleIoc.Default.Register<IDeviceServices, DeviceServices>();
+                SimpleIoc.Default.Register<INotificationService, NotificationService>();
             }
             else
             {
@@ -29,6 +30,7 @@ namespace rupload.ViewModel
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
                 SimpleIoc.Default.Register<IDeviceServices, DeviceServices>();
+                SimpleIoc.Default.Register<INotificationService, NotificationService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
@@ -52,6 +54,7 @@ namespace rupload.ViewModel
             SimpleIoc.Default.Unregister<ICommandLineArgsService>();
             SimpleIoc.Default.Unregister<IClipboardService>();
             SimpleIoc.Default.Unregister<IDeviceServices>();
+            SimpleIoc.Default.Register<INotificationService>();
         }
     }
 }
