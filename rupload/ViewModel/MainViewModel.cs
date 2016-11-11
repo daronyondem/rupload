@@ -1,11 +1,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using rupload.Helpers;
 using rupload.Services;
 using rupload.Services.Azure;
 using rupload.Services.Model;
 using System;
-using System.Threading.Tasks;
 using Windows.UI.Notifications;
 
 namespace rupload.ViewModel
