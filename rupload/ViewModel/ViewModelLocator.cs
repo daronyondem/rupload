@@ -20,6 +20,8 @@ namespace rupload.ViewModel
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
                 SimpleIoc.Default.Register<IDeviceServices, DeviceServices>();
+                SimpleIoc.Default.Register<INotificationService, NotificationService>();
+                SimpleIoc.Default.Register<IUrlShortenService, UrlShortenService>();
             }
             else
             {
@@ -29,6 +31,8 @@ namespace rupload.ViewModel
                 SimpleIoc.Default.Register<ICommandLineArgsService, CommandLineArgsService>();
                 SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
                 SimpleIoc.Default.Register<IDeviceServices, DeviceServices>();
+                SimpleIoc.Default.Register<INotificationService, NotificationService>();
+                SimpleIoc.Default.Register<IUrlShortenService, UrlShortenService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
@@ -41,10 +45,19 @@ namespace rupload.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
-        
+
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            // Clear the ViewModels
+            SimpleIoc.Default.Unregister<MainViewModel>();
+            SimpleIoc.Default.Unregister<BlobServiceConfig>();
+            SimpleIoc.Default.Unregister<IJsonConfigService<BlobServiceConfig>>();
+            SimpleIoc.Default.Unregister<IBlobService>();
+            SimpleIoc.Default.Unregister<ICommandLineArgsService>();
+            SimpleIoc.Default.Unregister<IClipboardService>();
+            SimpleIoc.Default.Unregister<IDeviceServices>();
+            SimpleIoc.Default.Unregister<INotificationService>();
+            SimpleIoc.Default.Unregister<IUrlShortenService>();
         }
     }
 }

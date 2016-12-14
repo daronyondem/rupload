@@ -37,7 +37,7 @@ namespace rupload.Services.Azure
             {
                 result = false;
             }
-            return result;           
+            return result;
         }
 
         public async Task<string> PreBuildUrl(string containerName, string path)
@@ -54,7 +54,7 @@ namespace rupload.Services.Azure
             await container.CreateIfNotExistsAsync();
 
             var blob = container.GetBlockBlobReference(System.IO.Path.GetFileName(path));
-            
+
             var tcs = new TaskCompletionSource<string>();
 
             BlobTransfer transferUpload = new BlobTransfer();
@@ -62,16 +62,16 @@ namespace rupload.Services.Azure
             {
                 progress.Report(new UploadProgressUpdate()
                 {
-                    Percentage=  e.ProgressPercentage, 
+                    Percentage = e.ProgressPercentage,
                     Description = (e.Speed / 1024).ToString("N2") + "KB/s"
-            });
+                });
             };
             transferUpload.TransferCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) =>
             {
                 tcs.TrySetResult("");
             };
             transferUpload.UploadBlobAsync(blob, path);
-                       
+
             await tcs.Task;
 
             blob.Properties.ContentType = System.Web.MimeMapping.GetMimeMapping(System.IO.Path.GetFileName(path));

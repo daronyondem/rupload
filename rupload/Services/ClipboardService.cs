@@ -6,7 +6,7 @@ namespace rupload.Services
         public void SetUriToClipboard(string Uri)
         {
             Uri = System.Web.HttpUtility.UrlPathEncode(Uri);
-            System.Windows.Clipboard.SetDataObject(Uri);
+            System.Windows.Clipboard.SetText(Uri);
         }
     }
 }

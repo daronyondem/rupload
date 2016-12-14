@@ -4,6 +4,7 @@ using rupload.Services;
 using rupload.Services.Azure;
 using rupload.Services.Model;
 using System;
+using Windows.UI.Notifications;
 
 namespace rupload.ViewModel
 {
@@ -15,13 +16,17 @@ namespace rupload.ViewModel
         ICommandLineArgsService currentCommandLineArgsService;
         IClipboardService currentClipboardService;
         IDeviceServices currentDeviceServices;
+        INotificationService currentNotificationService;
+        IUrlShortenService currentUrlShortenService;
 
-        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices)
+        public MainViewModel(IBlobService blobService, ICommandLineArgsService commandLineArgsService, IClipboardService clipboardService, IDeviceServices deviceServices, INotificationService notificationService, IUrlShortenService urlShortenService)
         {
             currentBlobService = blobService;
             currentCommandLineArgsService = commandLineArgsService;
             currentClipboardService = clipboardService;
             currentDeviceServices = deviceServices;
+            currentNotificationService = notificationService;
+            currentUrlShortenService = urlShortenService;
         }
 
         RelayCommand _UploadCommand;
@@ -30,17 +35,24 @@ namespace rupload.ViewModel
             string filePath = currentCommandLineArgsService.GetFirstCommand();
             string blobUrl = await currentBlobService.PreBuildUrl(containerName, filePath);
             currentClipboardService.SetUriToClipboard(blobUrl);
+            blobUrl = await currentUrlShortenService.TryOuoPress(blobUrl);
+            currentClipboardService.SetUriToClipboard(blobUrl);
             var progressIndicator = new Progress<UploadProgressUpdate>((UploadProgressUpdate progress) =>
             {
                 Progress = progress.Percentage;
                 UploadSpeed = progress.Description;
             });
+            progressIndicator.ProgressChanged += ProgressIndicator_ProgressChanged;
             blobUrl = await currentBlobService.UploadBlob(containerName, filePath, progressIndicator);
-            currentClipboardService.SetUriToClipboard(blobUrl);
+            await currentNotificationService.CreateToast(ToastTemplateType.ToastImageAndText02, filePath, "Upload Complete");
             currentDeviceServices.ShutDownApp();
         }));
 
-        public const string ProgressPropertyName = "Progress";
+        void ProgressIndicator_ProgressChanged(object sender, UploadProgressUpdate e)
+        {
+            App.trayIcon.ToolTipText = e.Percentage.ToString();
+        }
+
         double _Progress = default(double);
         public double Progress
         {
@@ -52,11 +64,10 @@ namespace rupload.ViewModel
             {
                 if (_Progress == value) return;
                 _Progress = value;
-                RaisePropertyChanged(ProgressPropertyName);
+                RaisePropertyChanged(nameof(Progress));
             }
         }
 
-        public const string UploadSpeedPropertyName = "UploadSpeed";
         string _UploadSpeed = string.Empty;
         public string UploadSpeed
         {
@@ -68,7 +79,7 @@ namespace rupload.ViewModel
             {
                 if (_UploadSpeed == value) return;
                 _UploadSpeed = value;
-                RaisePropertyChanged(UploadSpeedPropertyName);
+                RaisePropertyChanged(nameof(UploadSpeed));
             }
         }
     }
